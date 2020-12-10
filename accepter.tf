@@ -106,7 +106,7 @@ resource "aws_route" "accepter" {
   route_table_id            = "${element(local.accepter_aws_route_table_ids, ceil(count.index / local.requester_cidr_block_associations_count))}"
   destination_cidr_block    = "${lookup(local.requester_cidr_block_associations[count.index % local.requester_cidr_block_associations_count], "cidr_block")}"
   vpc_peering_connection_id = "${join("", aws_vpc_peering_connection.requester.*.id)}"
-  depends_on                = ["data.aws_route_tables.accepter", "aws_vpc_peering_connection_accepter.accepter", "aws_vpc_peering_connection.requester"]
+  depends_on                = ["data.aws_route_tables.accepter", "data.aws_vpc.accepter", "aws_vpc_peering_connection_accepter.accepter", "aws_vpc_peering_connection.requester"]
 }
 
 # Accepter's side of the connection.
